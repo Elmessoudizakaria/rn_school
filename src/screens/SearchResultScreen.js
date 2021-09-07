@@ -6,12 +6,13 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import React from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
 import { Button } from 'react-native-elements/dist/buttons/Button';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { chooseTeacher } from '../store/actions';
 
 const SearchResultScreen = (props) => {
   const data = [
@@ -130,6 +131,14 @@ const SearchResultScreen = (props) => {
       totalVotes: 253,
     },
   ];
+  useEffect(() => {
+    console.log(
+      'MAKE AN API REQUEST TO LOAD TEACHER FOR',
+      props.level,
+      ' ',
+      props.subject
+    );
+  }, []);
   const makeAvatarTitle = (item) => {
     return `${item.name.toUpperCase().charAt(0)}${item.lastName
       .toUpperCase()
@@ -259,4 +268,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
-export default SearchResultScreen;
+const mapStateToProps = ({ search }) => {
+  return {
+    level: search.level,
+    subject: search.subject,
+  };
+};
+export default connect(mapStateToProps, { chooseTeacher })(SearchResultScreen);

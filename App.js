@@ -3,12 +3,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SearchResultScreen from './src/screens/SearchResultScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import StarterScreen from './src/screens/StarterScreen';
 import TeacherDetail from './src/screens/TeacherDetail';
+import reducers from './src/store/reducers';
 
 const HomeStack = createStackNavigator();
 const HomeFlowScreen = () => (
@@ -93,9 +97,12 @@ const RootScreen = () => {
   );
 };
 export default function App() {
+  const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
   return (
-    <NavigationContainer>
-      <RootScreen />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <RootScreen />
+      </NavigationContainer>
+    </Provider>
   );
 }

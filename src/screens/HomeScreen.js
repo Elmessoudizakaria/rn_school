@@ -6,22 +6,20 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import { chooseLevel } from '../store/actions';
 
 const HomeScreen = (props) => {
-  const [level, setLevel] = useState('secondary');
   const serach = () => {
-    console.log('TEST NAVIGATION');
     props.navigation.navigate('SchoolSearch');
   };
-  const changeLevel = (levell) => {
-    console.log('LEVEL CHANGED');
-    setLevel(levell);
+  const changeLevel = (level) => {
+    props.chooseLevel(level);
   };
   return (
     <View>
@@ -50,7 +48,7 @@ const HomeScreen = (props) => {
               style={[
                 styles.levelContainer,
                 styles.secondary,
-                level === 'secondary'
+                props.level === 'secondary'
                   ? styles.selectedLevel
                   : styles.nonSelectedLevel,
               ]}
@@ -65,7 +63,7 @@ const HomeScreen = (props) => {
               style={[
                 styles.levelContainer,
                 styles.highSchool,
-                level === 'hightSchool'
+                props.level === 'hightSchool'
                   ? styles.selectedLevel
                   : styles.nonSelectedLevel,
               ]}
@@ -157,5 +155,9 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
 });
-
-export default HomeScreen;
+const mapStateToProps = ({ search }) => {
+  return {
+    level: search.level,
+  };
+};
+export default connect(mapStateToProps, { chooseLevel })(HomeScreen);
