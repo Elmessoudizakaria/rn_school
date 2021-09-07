@@ -7,15 +7,16 @@ import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SearchResultScreen from './src/screens/SearchResultScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import StarterScreen from './src/screens/StarterScreen';
 import TeacherDetail from './src/screens/TeacherDetail';
 
 const HomeStack = createStackNavigator();
 const HomeFlowScreen = () => (
   <HomeStack.Navigator>
     <HomeStack.Screen
-      name="SchoolHome"
-      options={{ title: 'Home', headerShown: false }}
-      component={HomeScreen}
+      name="MainPage"
+      options={{ title: 'Entry', headerShown: false }}
+      component={StarterScreen}
     />
   </HomeStack.Navigator>
 );
@@ -86,7 +87,7 @@ const RootStack = createStackNavigator();
 const RootScreen = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <RootStack.Screen name="Home" component={HomeFlowScreen} /> */}
+      <RootStack.Screen name="Home" component={HomeFlowScreen} />
       <RootStack.Screen name="App" component={TabsScreen} />
     </RootStack.Navigator>
   );

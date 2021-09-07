@@ -7,16 +7,21 @@
  * -----
  */
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const HomeScreen = (props) => {
-  const [level, setLevel] = useState('');
+  const [level, setLevel] = useState('secondary');
   const serach = () => {
+    console.log('TEST NAVIGATION');
     props.navigation.navigate('SchoolSearch');
+  };
+  const changeLevel = (levell) => {
+    console.log('LEVEL CHANGED');
+    setLevel(levell);
   };
   return (
     <View>
@@ -37,45 +42,36 @@ const HomeScreen = (props) => {
           Choose level
         </Text>
         <View style={styles.levelView}>
-          <TouchableOpacity onPress={() => setLevel('secondary')}>
-            <>
-              <View
-                style={[
-                  styles.levelContainer,
-                  styles.secondary,
-                  level === 'secondary'
-                    ? styles.selectedLevel
-                    : styles.nonSelectedLevel,
-                ]}
-              ></View>
-              <Text style={styles.levelLabel}>College</Text>
-            </>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setLevel('hightSchool')}>
-            <>
-              <View
-                style={[
-                  styles.levelContainer,
-                  styles.highSchool,
-                  level === 'hightSchool'
-                    ? styles.selectedLevel
-                    : styles.nonSelectedLevel,
-                ]}
-              ></View>
-              <Text style={styles.levelLabel}>Lycée</Text>
-            </>
-          </TouchableOpacity>
-          {/* <TouchableOpacity onPress={() => setLevel('prepaClasses')}>
+          <TouchableOpacity
+            onPress={() => changeLevel('secondary')}
+            style={{ width: '20%', height: 50, zIndex: 1 }}
+          >
             <View
               style={[
                 styles.levelContainer,
-                styles.prepaClasses,
-                level === 'prepaClasses'
+                styles.secondary,
+                level === 'secondary'
                   ? styles.selectedLevel
                   : styles.nonSelectedLevel,
               ]}
             ></View>
-          </TouchableOpacity> */}
+            <Text style={styles.levelLabel}>College</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => changeLevel('hightSchool')}
+            style={{ width: '20%', height: 50, zIndex: 1 }}
+          >
+            <View
+              style={[
+                styles.levelContainer,
+                styles.highSchool,
+                level === 'hightSchool'
+                  ? styles.selectedLevel
+                  : styles.nonSelectedLevel,
+              ]}
+            ></View>
+            <Text style={styles.levelLabel}>Lycée</Text>
+          </TouchableOpacity>
         </View>
         <Button
           title="check"
@@ -110,6 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 10,
+    marginBottom: '20%',
   },
   levelContainer: {
     width: 50,
@@ -120,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     marginBottom: 10,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   checkButton: {
     marginTop: 25,
@@ -144,17 +141,17 @@ const styles = StyleSheet.create({
   prepaClasses: { backgroundColor: '#db9e82d8' },
   selectedLevel: {
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: '#885946',
   },
   nonSelectedLevel: {
     borderWidth: 0,
     borderColor: 'black',
   },
   levelLabel: {
-    textAlign: 'center',
+    // textAlign: 'center',
     fontSize: 17,
-    fontFamily: 'TimeNewRoman',
-    fontWeight: 700,
+    // fontFamily: 'TimeNewRoman',
+    fontWeight: '700',
     paddingTop: 5,
     color: '#062c2cd8',
     textTransform: 'capitalize',

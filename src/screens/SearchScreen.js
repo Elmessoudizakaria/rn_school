@@ -7,10 +7,9 @@
  * -----
  */
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Card } from 'react-native-elements';
-import { Icon } from 'react-native-elements/dist/icons/Icon';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Card, Icon, Text } from 'react-native-elements';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SearchScreen = (props) => {
   const search = () => {
@@ -20,8 +19,9 @@ const SearchScreen = (props) => {
     <View>
       <View style={styles.subjectContainerView}>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>Physique</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="atom"
               type="font-awesome-5"
@@ -31,8 +31,9 @@ const SearchScreen = (props) => {
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>Chemistry</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="vial"
               type="font-awesome-5"
@@ -42,8 +43,9 @@ const SearchScreen = (props) => {
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>Mathematics</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="infinity"
               type="font-awesome-5"
@@ -54,8 +56,9 @@ const SearchScreen = (props) => {
         </Card>
 
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>History</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="hourglass-end"
               type="font-awesome-5"
@@ -65,8 +68,9 @@ const SearchScreen = (props) => {
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>Frensh</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="language"
               type="font-awesome-5"
@@ -76,8 +80,9 @@ const SearchScreen = (props) => {
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>Biology</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="dna"
               type="font-awesome-5"
@@ -87,8 +92,9 @@ const SearchScreen = (props) => {
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity onPress={() => search()}>
+          <TouchableOpacity onPress={() => search()} style={{ width: '100%' }}>
             <Card.Title>English</Card.Title>
+            <Card.Divider></Card.Divider>
             <Icon
               name="language"
               type="font-awesome-5"
@@ -104,13 +110,12 @@ const SearchScreen = (props) => {
 
 const styles = StyleSheet.create({
   subjectContainerView: {
-    flex: 1,
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    height: 300,
+    height: '100%',
   },
   card: {
-    maxHeight: 100,
     width: '40%',
   },
 });

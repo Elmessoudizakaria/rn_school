@@ -7,13 +7,13 @@
  * -----
  */
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, Text } from 'react-native-elements';
 
 const ProfileScreen = () => {
   return (
-    <View style={{ paddingHorizontal: 20 }}>
-      <View>
+    <View style={{ paddingHorizontal: 20, paddingVertical: 30 }}>
+      <View style={styles.avatarContainer}>
         <Avatar
           rounded
           title="ZE"
@@ -24,25 +24,48 @@ const ProfileScreen = () => {
           activeOpacity={0.9}
         />
       </View>
-      <View>
-        <Text h3>Zakaria EL messoudi</Text>
+      <View style={styles.avatarContainer}>
+        <Text h3 style={styles.nameLabel}>
+          Zakaria EL messoudi
+        </Text>
       </View>
-      <View>
-        <Text h3>+(212)67 89 64 39</Text>
+      <View style={styles.avatarContainer}>
+        <Text h3 style={styles.numberLabel}>
+          +(212)67 89 64 39
+        </Text>
       </View>
-      <View>
-        <Text h3>email@email.com</Text>
+      <View style={styles.avatarContainer}>
+        <Text h3 style={styles.emailLabel}>
+          email@email.com
+        </Text>
       </View>
       <View>
         <Button title="update profile" type="outline" />
       </View>
-      {/* Avatar */}
-      {/* Name */}
-      {/* number */}
-      {/* email */}
-      {/* change button */}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  avatarContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15,
+  },
+  nameLabel: {
+    fontWeight: 'bold',
+    color: '#062c2cd8',
+    marginBottom: 10,
+  },
+  numberLabel: {
+    marginBottom: 10,
+  },
+  emailLabel: {
+    marginBottom: 10,
+  },
+  viewContainer: {},
+  // avatarContainer:{}
+});
 
 export default ProfileScreen;

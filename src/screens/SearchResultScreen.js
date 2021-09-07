@@ -7,11 +7,11 @@
  * -----
  */
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
 import { Button } from 'react-native-elements/dist/buttons/Button';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SearchResultScreen = (props) => {
   const data = [
@@ -53,6 +53,82 @@ const SearchResultScreen = (props) => {
       price: '280.00 DHS',
       totalVotes: 253,
     },
+    {
+      id: '5',
+      name: 'zack',
+      lastName: 'El',
+      avatar:
+        'https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png',
+      rate: 4.8,
+      price: '200.00 DHS',
+      totalVotes: 453,
+    },
+    {
+      id: '6',
+      name: 'simo',
+      lastName: 'Marb',
+      avatar: 'null',
+      rate: 4.5,
+      price: '150.00 DHS',
+      totalVotes: 153,
+    },
+    {
+      id: '7',
+      name: 'joe',
+      lastName: 'Ben',
+      avatar: 'null',
+      rate: 4.3,
+      price: '180.00 DHS',
+      totalVotes: 450,
+    },
+    {
+      id: '8',
+      name: 'Zineb',
+      lastName: 'Eso',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjAAwQyKxGO39mWtUYjD0s_uhMSmEi4wXyPg&usqp=CAU',
+      rate: 4.7,
+      price: '280.00 DHS',
+      totalVotes: 253,
+    },
+    {
+      id: '9',
+      name: 'zack',
+      lastName: 'El',
+      avatar:
+        'https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile-thumbnail.png',
+      rate: 4.8,
+      price: '200.00 DHS',
+      totalVotes: 453,
+    },
+    {
+      id: '10',
+      name: 'simo',
+      lastName: 'Marb',
+      avatar: 'null',
+      rate: 4.5,
+      price: '150.00 DHS',
+      totalVotes: 153,
+    },
+    {
+      id: '11',
+      name: 'joe',
+      lastName: 'Ben',
+      avatar: 'null',
+      rate: 4.3,
+      price: '180.00 DHS',
+      totalVotes: 450,
+    },
+    {
+      id: '12',
+      name: 'Zineb',
+      lastName: 'Eso',
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjAAwQyKxGO39mWtUYjD0s_uhMSmEi4wXyPg&usqp=CAU',
+      rate: 4.7,
+      price: '280.00 DHS',
+      totalVotes: 253,
+    },
   ];
   const makeAvatarTitle = (item) => {
     return `${item.name.toUpperCase().charAt(0)}${item.lastName
@@ -63,14 +139,14 @@ const SearchResultScreen = (props) => {
     props.navigation.navigate('SearchDetail');
   };
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.resultBlock}>
         <Text h4 style={styles.title}>
           {' '}
           Search results : {data.length}
         </Text>
         <Button
-          title="send all"
+          title="send all "
           type="outline"
           iconRight
           icon={
@@ -84,6 +160,8 @@ const SearchResultScreen = (props) => {
         <FlatList
           data={data}
           keyExtractor={(teacher) => teacher.id}
+          showsVerticalScrollIndicator={false}
+          legacyImplementation={false}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity onPress={() => search()}>
@@ -129,6 +207,12 @@ const SearchResultScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    marginTop: '1%',
+    marginBottom: '25%',
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -149,7 +233,7 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   resultBlock: {
-    flex: 1,
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 20,
