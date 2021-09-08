@@ -6,12 +6,14 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { connect } from 'react-redux';
+import { Spinner } from '../components/Spinner';
+import useLocation from '../hooks/useLocation';
 import { chooseTeacher } from '../store/actions';
 
 const SearchResultScreen = (props) => {
@@ -131,14 +133,7 @@ const SearchResultScreen = (props) => {
       totalVotes: 253,
     },
   ];
-  useEffect(() => {
-    console.log(
-      'MAKE AN API REQUEST TO LOAD TEACHER FOR',
-      props.level,
-      ' ',
-      props.subject
-    );
-  }, []);
+  const [errorMsg, location] = useLocation();
   const makeAvatarTitle = (item) => {
     return `${item.name.toUpperCase().charAt(0)}${item.lastName
       .toUpperCase()
@@ -147,70 +142,89 @@ const SearchResultScreen = (props) => {
   const search = () => {
     props.navigation.navigate('SearchDetail');
   };
+  if (location) {
+    console.log(
+      `MAKE AN API CALL FOR ${props.subject} ${
+        props.level
+      } and ${JSON.stringify(location)}`
+    );
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.resultBlock}>
-        <Text h4 style={styles.title}>
-          {' '}
-          Search results : {data.length}
-        </Text>
-        <Button
-          title="send all "
-          type="outline"
-          iconRight
-          icon={
-            <Icon name="globe" type="font-awesome-5" size={15} color="white" />
-          }
-          buttonStyle={styles.checkButton}
-          titleStyle={styles.checkButtonLabel}
-        />
-      </View>
-      <View>
-        <FlatList
-          data={data}
-          keyExtractor={(teacher) => teacher.id}
-          showsVerticalScrollIndicator={false}
-          legacyImplementation={false}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => search()}>
-                <View style={styles.row}>
-                  <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <Avatar
-                      rounded
-                      title={makeAvatarTitle(item)}
-                      size="small"
-                      source={{
-                        uri: item.avatar,
-                      }}
-                      activeOpacity={0.9}
-                      containerStyle={{ marginRight: 10 }}
-                    />
-                    <View>
-                      <Text style={styles.title}>
-                        {item.name} {item.lastName}
-                      </Text>
-                      <Text>
-                        <Icon
-                          name="star"
-                          type="font-awsome"
-                          size={12}
-                          color={'yellow'}
-                        />{' '}
-                        {item.rate}{' '}
-                        <Text style={styles.totalVotes}>
-                          ({item.totalVotes})
-                        </Text>
-                      </Text>
+      {errorMsg ? <Text h4>{errorMsg}</Text> : null}
+      {location ? (
+        <>
+          <View style={styles.resultBlock}>
+            <Text h4 style={styles.title}>
+              {' '}
+              Search results : {data.length}
+            </Text>
+            <Button
+              title="send all "
+              type="outline"
+              iconRight
+              icon={
+                <Icon
+                  name="globe"
+                  type="font-awesome-5"
+                  size={15}
+                  color="white"
+                />
+              }
+              buttonStyle={styles.checkButton}
+              titleStyle={styles.checkButtonLabel}
+            />
+          </View>
+          <View>
+            <FlatList
+              data={data}
+              keyExtractor={(teacher) => teacher.id}
+              showsVerticalScrollIndicator={false}
+              legacyImplementation={false}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity onPress={() => search()}>
+                    <View style={styles.row}>
+                      <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Avatar
+                          rounded
+                          title={makeAvatarTitle(item)}
+                          size="small"
+                          source={{
+                            uri: item.avatar,
+                          }}
+                          activeOpacity={0.9}
+                          containerStyle={{ marginRight: 10 }}
+                        />
+                        <View>
+                          <Text style={styles.title}>
+                            {item.name} {item.lastName}
+                          </Text>
+                          <Text>
+                            <Icon
+                              name="star"
+                              type="font-awsome"
+                              size={12}
+                              color={'yellow'}
+                            />{' '}
+                            {item.rate}{' '}
+                            <Text style={styles.totalVotes}>
+                              ({item.totalVotes})
+                            </Text>
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={styles.price}>{item.price}</Text>
                     </View>
-                  </View>
-                  <Text style={styles.price}>{item.price}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        </>
+      ) : (
+        <Spinner size={120} />
+      )}
     </View>
   );
 };
