@@ -78,6 +78,7 @@ const HomeScreen = (props) => {
           containerStyle={styles.buttonContainer}
           titleStyle={styles.checkButtonLabel}
           onPress={() => serach()}
+          disabled={props.level == ''}
         />
       </View>
     </View>

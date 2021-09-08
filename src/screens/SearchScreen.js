@@ -7,9 +7,9 @@
  * -----
  */
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import SubjectItem from '../components/SubjectItem';
 import { chooseSubject } from '../store/actions';
 
 const SearchScreen = (props) => {
@@ -20,112 +20,15 @@ const SearchScreen = (props) => {
   return (
     <View>
       <View style={styles.subjectContainerView}>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Physique')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>Physique</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="atom"
-              type="font-awesome-5"
-              size={40}
-              color={'#d47345d8'}
-            />
-          </TouchableOpacity>
-        </Card>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Chemistry')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>Chemistry</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="vial"
-              type="font-awesome-5"
-              size={40}
-              color={'#45d4cdd8'}
-            />
-          </TouchableOpacity>
-        </Card>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Mathematics')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>Mathematics</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="infinity"
-              type="font-awesome-5"
-              size={40}
-              color={'#b345d4d8'}
-            />
-          </TouchableOpacity>
-        </Card>
-
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Mathematics')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>History</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="hourglass-end"
-              type="font-awesome-5"
-              size={40}
-              color={'#4679e6d8'}
-            />
-          </TouchableOpacity>
-        </Card>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Mathematics')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>Frensh</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="language"
-              type="font-awesome-5"
-              size={40}
-              color={'#46e67bd8'}
-            />
-          </TouchableOpacity>
-        </Card>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Mathematics')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>Biology</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="dna"
-              type="font-awesome-5"
-              size={40}
-              color={'#e69346d8'}
-            />
-          </TouchableOpacity>
-        </Card>
-        <Card containerStyle={styles.card}>
-          <TouchableOpacity
-            onPress={() => search('Mathematics')}
-            style={{ width: '100%' }}
-          >
-            <Card.Title>English</Card.Title>
-            <Card.Divider></Card.Divider>
-            <Icon
-              name="language"
-              type="font-awesome-5"
-              size={40}
-              color={'#e64646d8'}
-            />
-          </TouchableOpacity>
-        </Card>
+        {props.subjecList.map((subject) => (
+          <SubjectItem
+            key={subject.name}
+            subjectName={subject.name}
+            icon={subject.icon}
+            iconColor={subject.color}
+            search={search}
+          />
+        ))}
       </View>
     </View>
   );
@@ -133,6 +36,7 @@ const SearchScreen = (props) => {
 
 const styles = StyleSheet.create({
   subjectContainerView: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -142,5 +46,9 @@ const styles = StyleSheet.create({
     width: '40%',
   },
 });
-
-export default connect(null, { chooseSubject })(SearchScreen);
+const mapStateToProps = ({ search }) => {
+  return {
+    subjecList: search.subjectsList,
+  };
+};
+export default connect(mapStateToProps, { chooseSubject })(SearchScreen);

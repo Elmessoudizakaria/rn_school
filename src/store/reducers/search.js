@@ -12,6 +12,16 @@ const initialState = {
   teacher: '',
   subject: '',
   level: '',
+  subjectsList: [
+    { name: 'Physique', icon: 'atom', color: '#d47345d8' },
+    { name: 'Chemistry', icon: 'flask', color: '#45d4cdd8' },
+    { name: 'Mathematics', icon: 'infinity', color: '#b345d4d8' },
+    { name: 'History', icon: 'hourglass-end', color: '#4679e6d8' },
+    { name: 'Frensh', icon: 'language', color: '#46e67bd8' },
+    { name: 'Biology', icon: 'dna', color: '#e69346d8' },
+    { name: 'English', icon: 'language', color: '#e64646d8' },
+    { name: 'Geography', icon: 'globe-africa', color: '#d6e646d8' },
+  ],
 };
 
 export default (state = initialState, action) => {
