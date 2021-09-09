@@ -142,6 +142,14 @@ const SearchResultScreen = (props) => {
   const search = () => {
     props.navigation.navigate('SearchDetail');
   };
+  // useEffect(() => {
+  //   const message = {
+  //     username: 'name',
+  //     content: 'f',
+  //   };
+
+  //   set(push(ref(db, 'messages')), message);
+  // }, []);
   if (location) {
     console.log(
       `MAKE AN API CALL FOR ${props.subject} ${

@@ -9,3 +9,8 @@
 export const CHOOSE_LEVEL = 'choose_level';
 export const CHOOSE_SUBJECT = 'choose_subject';
 export const CHOOSE_TEACHER = 'choose_teacher';
+
+export const LOGIN = 'login';
+export const REGISTER = 'REGISTER';
+export const LOGIN_SUCCESS = 'login_success';
+export const LOGIN_FAILURE = 'login_failure';

@@ -1,12 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import { initializeApp } from 'firebase/app';
+import React, { useEffect } from 'react';
 import { Icon } from 'react-native-elements';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import HomeScreen from './src/screens/HomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SearchResultScreen from './src/screens/SearchResultScreen';
 import SearchScreen from './src/screens/SearchScreen';
@@ -91,7 +93,7 @@ const RootStack = createStackNavigator();
 const RootScreen = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="Home" component={HomeFlowScreen} />
+      <RootStack.Screen name="Home" component={LoginScreen} />
       <RootStack.Screen name="App" component={TabsScreen} />
     </RootStack.Navigator>
   );
