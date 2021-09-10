@@ -6,12 +6,14 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import React from 'react';
+import { ref as fireRef, set, push } from 'firebase/database';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { connect } from 'react-redux';
+import { db } from '../api/firebaseApi';
 import { Spinner } from '../components/Spinner';
 import useLocation from '../hooks/useLocation';
 import { chooseTeacher } from '../store/actions';
@@ -133,6 +135,7 @@ const SearchResultScreen = (props) => {
       totalVotes: 253,
     },
   ];
+  const [results, setResults] = useState([]);
   const [errorMsg, location] = useLocation();
   const makeAvatarTitle = (item) => {
     return `${item.name.toUpperCase().charAt(0)}${item.lastName
@@ -142,30 +145,35 @@ const SearchResultScreen = (props) => {
   const search = () => {
     props.navigation.navigate('SearchDetail');
   };
-  // useEffect(() => {
-  //   const message = {
-  //     username: 'name',
-  //     content: 'f',
-  //   };
+  useEffect(() => {
+    if (props.uid.length > 0) {
+      if (location !== null) {
+        const searchBody = {
+          level: props.level,
+          subject: props.subject,
+          location: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          },
+        };
 
-  //   set(push(ref(db, 'messages')), message);
-  // }, []);
-  if (location) {
-    console.log(
-      `MAKE AN API CALL FOR ${props.subject} ${
-        props.level
-      } and ${JSON.stringify(location)}`
-    );
-  }
+        set(push(fireRef(db, 'users/' + props.uid)), searchBody);
+        setResults(data);
+      }
+    } else {
+      // alert('login first')
+      props.navigation.navigate('AuthPage')
+    }
+  }, [location]);
   return (
     <View style={styles.container}>
       {errorMsg ? <Text h4>{errorMsg}</Text> : null}
-      {location ? (
+      {location && results.length > 0 ? (
         <>
           <View style={styles.resultBlock}>
             <Text h4 style={styles.title}>
               {' '}
-              Search results : {data.length}
+              Search results : {results.length}
             </Text>
             <Button
               title="send all "
@@ -185,7 +193,7 @@ const SearchResultScreen = (props) => {
           </View>
           <View>
             <FlatList
-              data={data}
+              data={results}
               keyExtractor={(teacher) => teacher.id}
               showsVerticalScrollIndicator={false}
               legacyImplementation={false}
@@ -290,10 +298,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
-const mapStateToProps = ({ search }) => {
+const mapStateToProps = ({ search, auth }) => {
   return {
     level: search.level,
     subject: search.subject,
+    uid: auth.uid,
   };
 };
 export default connect(mapStateToProps, { chooseTeacher })(SearchResultScreen);

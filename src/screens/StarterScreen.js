@@ -6,14 +6,28 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import React from 'react';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
-
 const StarterScreen = ({ navigation }) => {
   const goHome = () => {
     navigation.navigate('App');
   };
+  const goToLogin = () => {
+    navigation.navigate('AuthPage');
+  };
+
+  useEffect(() => {
+    async function getUid() {
+      const uid = await useAsyncStorage('uid').getItem();
+      const email = await useAsyncStorage('email').getItem();
+      if (uid && email) {
+        goHome();
+      }
+    }
+    getUid();
+  }, []);
   return (
     <View style={styles.backPage}>
       <View style={styles.upperPage}>
@@ -39,6 +53,7 @@ const StarterScreen = ({ navigation }) => {
           type="solid"
           containerStyle={styles.buttonContainer}
           buttonStyle={styles.signButton}
+          onPress={goToLogin}
         />
       </View>
     </View>

@@ -24,6 +24,11 @@ const HomeFlowScreen = () => (
       options={{ title: 'Entry', headerShown: false }}
       component={StarterScreen}
     />
+    <HomeStack.Screen
+      name="AuthPage"
+      options={{ title: 'Login', headerShown: false }}
+      component={LoginScreen}
+    />
   </HomeStack.Navigator>
 );
 const MainStack = createStackNavigator();
@@ -93,7 +98,7 @@ const RootStack = createStackNavigator();
 const RootScreen = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="Home" component={LoginScreen} />
+      <RootStack.Screen name="Home" component={HomeFlowScreen} />
       <RootStack.Screen name="App" component={TabsScreen} />
     </RootStack.Navigator>
   );

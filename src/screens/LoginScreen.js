@@ -7,13 +7,12 @@
  * -----
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { login, register } from '../store/actions';
-
 const LoginScreen = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,13 +28,14 @@ const LoginScreen = (props) => {
   };
   useEffect(() => {
     async function setToken() {
-      if (props.user && props.user.user) {
-        console.log(props.user.user.uid);
-        await AsyncStorage.setItem(props.user.user.uid, 'uid');
+      if (props.uid.length > 0 && props.email.length > 0) {
+        await useAsyncStorage('uid').setItem(props.uid);
+        await useAsyncStorage('email').setItem(props.email);
+        props.navigation.navigate('App');
       }
     }
     setToken();
-  }, [props.user]);
+  }, [props.uid]);
   return (
     <>
       <View style={styles.pageBackend}>
@@ -135,6 +135,11 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = ({ auth }) => {
-  return { user: auth.user, error: auth.error };
+  return {
+    user: auth.user,
+    error: auth.error,
+    uid: auth.uid,
+    email: auth.email,
+  };
 };
 export default connect(mapStateToProps, { login, register })(LoginScreen);

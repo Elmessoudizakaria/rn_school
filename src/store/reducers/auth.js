@@ -28,6 +28,7 @@ const initialState = {
   error: '',
   password: '',
   loading: false,
+  uid:''
 };
 
 export default (state = initialState, action) => {
@@ -54,6 +55,8 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         user: action.payload,
+        uid: action.payload.user.uid,
+        email: action.payload.user.email
       };
 
     default:
