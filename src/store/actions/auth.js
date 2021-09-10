@@ -12,12 +12,19 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { LOGIN, LOGIN_FAILURE, LOGIN_SUCCESS, REGISTER } from './types';
+import { app } from '../../api/firebaseApi';
+import {
+  LOGIN,
+  LOGIN_FAILURE,
+  LOGIN_SUCCESS,
+  REGISTER,
+  RESET_TOKEN,
+} from './types';
 
 export const login = ({ email, password }) => {
   return (dispatch) => {
     dispatch({ type: LOGIN });
-    const auth = getAuth();
+    const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => loginUserSuccess(dispatch, user))
       .catch((err) => loginUserFail(dispatch));
@@ -27,7 +34,7 @@ export const login = ({ email, password }) => {
 export const register = ({ email, password }) => {
   return (dispatch) => {
     dispatch({ type: REGISTER });
-    const auth = getAuth();
+    const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
       .then((user) => loginUserSuccess(dispatch, user))
       .catch((error) => loginUserFail(dispatch));
@@ -42,4 +49,11 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_SUCCESS,
     payload: user,
   });
+};
+
+export const resetToken = (token) => {
+  return {
+    type: RESET_TOKEN,
+    payload: token,
+  };
 };

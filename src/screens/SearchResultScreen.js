@@ -156,13 +156,12 @@ const SearchResultScreen = (props) => {
             longitude: location.coords.longitude,
           },
         };
-
         set(push(fireRef(db, 'users/' + props.uid)), searchBody);
         setResults(data);
       }
     } else {
       // alert('login first')
-      props.navigation.navigate('AuthPage')
+      props.navigation.navigate('AuthPage');
     }
   }, [location]);
   return (

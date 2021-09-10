@@ -26,16 +26,16 @@ const LoginScreen = (props) => {
     setEmail('');
     setPassword('');
   };
-  useEffect(() => {
-    async function setToken() {
-      if (props.uid.length > 0 && props.email.length > 0) {
-        await useAsyncStorage('uid').setItem(props.uid);
-        await useAsyncStorage('email').setItem(props.email);
-        props.navigation.navigate('App');
-      }
-    }
-    setToken();
-  }, [props.uid]);
+  // useEffect(() => {
+  //   async function setToken() {
+  //     if (props.uid.length > 0 && props.email.length > 0) {
+  //       await useAsyncStorage('uid').setItem(props.uid);
+  //       await useAsyncStorage('email').setItem(props.email);
+  //       props.navigation.navigate('App');
+  //     }
+  //   }
+  //   setToken();
+  // }, [props.uid]);
   return (
     <>
       <View style={styles.pageBackend}>

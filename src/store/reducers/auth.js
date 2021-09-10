@@ -20,6 +20,7 @@ import {
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   REGISTER,
+  RESET_TOKEN,
 } from '../actions/types';
 
 const initialState = {
@@ -28,7 +29,7 @@ const initialState = {
   error: '',
   password: '',
   loading: false,
-  uid:''
+  uid: '',
 };
 
 export default (state = initialState, action) => {
@@ -44,6 +45,12 @@ export default (state = initialState, action) => {
         ...state,
         loading: true,
       };
+    case RESET_TOKEN:
+      return {
+        ...state,
+        email: action.payload.email,
+        uid: action.payload.uid,
+      };
     case LOGIN_FAILURE:
       return {
         ...state,
@@ -51,12 +58,13 @@ export default (state = initialState, action) => {
         error: 'Authentication Failed.',
       };
     case LOGIN_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         loading: false,
         user: action.payload,
         uid: action.payload.user.uid,
-        email: action.payload.user.email
+        email: action.payload.user.email,
       };
 
     default:

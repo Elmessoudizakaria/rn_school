@@ -6,56 +6,67 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
-const StarterScreen = ({ navigation }) => {
+import { connect } from 'react-redux';
+import { Spinner } from '../components/Spinner';
+import { resetToken } from '../store/actions';
+const StarterScreen = (props) => {
+  const [loading, setLoading] = useState(true);
+  const authStateChanged = (currentUser) => {
+    if (currentUser) {
+      props.resetToken({ email: currentUser.email, uid: currentUser.uid });
+      goHome();
+    } else {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const auth = getAuth();
+    return onAuthStateChanged(auth, authStateChanged);
+  }, []);
   const goHome = () => {
-    navigation.navigate('App');
+    props.navigation.navigate('App');
   };
   const goToLogin = () => {
-    navigation.navigate('AuthPage');
+    props.navigation.navigate('AuthPage');
   };
-
-  useEffect(() => {
-    async function getUid() {
-      const uid = await useAsyncStorage('uid').getItem();
-      const email = await useAsyncStorage('email').getItem();
-      if (uid && email) {
-        goHome();
-      }
-    }
-    getUid();
-  }, []);
   return (
     <View style={styles.backPage}>
-      <View style={styles.upperPage}>
-        <Icon
-          name="user-graduate"
-          type="font-awesome-5"
-          iconStyle={styles.icon}
-          size={160}
-        />
-        <Text h3 style={styles.title}>
-          Welcome To The Virtual School
-        </Text>
-      </View>
-      <View>
-        <Button
-          title="Let's Get Started"
-          type="outline"
-          containerStyle={styles.buttonContainer}
-          onPress={goHome}
-        />
-        <Button
-          title="Sign In"
-          type="solid"
-          containerStyle={styles.buttonContainer}
-          buttonStyle={styles.signButton}
-          onPress={goToLogin}
-        />
-      </View>
+      {loading ? (
+        <Spinner size={100} />
+      ) : (
+        <>
+          <View style={styles.upperPage}>
+            <Icon
+              name="user-graduate"
+              type="font-awesome-5"
+              iconStyle={styles.icon}
+              size={160}
+            />
+            <Text h3 style={styles.title}>
+              Welcome To The Virtual School
+            </Text>
+          </View>
+          <View>
+            <Button
+              title="Let's Get Started"
+              type="outline"
+              containerStyle={styles.buttonContainer}
+              onPress={goHome}
+            />
+            <Button
+              title="Sign In"
+              type="solid"
+              containerStyle={styles.buttonContainer}
+              buttonStyle={styles.signButton}
+              onPress={goToLogin}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -87,4 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#46887d',
   },
 });
-export default StarterScreen;
+const mapStateToProps = ({ auth }) => {
+  return { uid: auth.uid, email: auth.email };
+};
+export default connect(mapStateToProps, { resetToken })(StarterScreen);

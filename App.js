@@ -1,8 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { initializeApp } from 'firebase/app';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Icon } from 'react-native-elements';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
@@ -15,7 +14,6 @@ import SearchScreen from './src/screens/SearchScreen';
 import StarterScreen from './src/screens/StarterScreen';
 import TeacherDetail from './src/screens/TeacherDetail';
 import reducers from './src/store/reducers';
-
 const HomeStack = createStackNavigator();
 const HomeFlowScreen = () => (
   <HomeStack.Navigator>
