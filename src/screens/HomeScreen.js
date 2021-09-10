@@ -8,8 +8,7 @@
  */
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-elements';
-import { Button } from 'react-native-elements/dist/buttons/Button';
+import { Button, Text } from 'react-native-elements';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { connect } from 'react-redux';
 import { chooseLevel } from '../store/actions';
@@ -22,7 +21,7 @@ const HomeScreen = (props) => {
     props.chooseLevel(level);
   };
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.upperPage}>
         <Text h3 style={styles.title}>
           School Helper
@@ -42,7 +41,13 @@ const HomeScreen = (props) => {
         <View style={styles.levelView}>
           <TouchableOpacity
             onPress={() => changeLevel('secondary')}
-            style={{ width: '20%', height: 50, zIndex: 1 }}
+            style={{
+              width: '20%',
+              height: 50,
+              zIndex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
           >
             <View
               style={[
@@ -57,7 +62,13 @@ const HomeScreen = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => changeLevel('hightSchool')}
-            style={{ width: '20%', height: 50, zIndex: 1 }}
+            style={{
+              width: '20%',
+              height: 50,
+              zIndex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
           >
             <View
               style={[
@@ -86,14 +97,17 @@ const HomeScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-  upperPage: {
+  container: {
     backgroundColor: '#284d4dd8',
-    height: 350,
-    borderBottomEndRadius: 150,
-    borderBottomStartRadius: 150,
+  },
+  upperPage: {
+    height: '60%',
   },
   lowerPage: {
+    backgroundColor: '#fff',
     paddingVertical: 20,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
   },
   title: {
     color: '#fff',
@@ -105,7 +119,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 10,
-    marginBottom: '20%',
+    marginBottom: '7%',
+    marginTop: '5%',
   },
   levelContainer: {
     width: 50,
