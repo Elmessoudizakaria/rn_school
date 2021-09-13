@@ -175,7 +175,7 @@ const SearchResultScreen = (props) => {
               Search results : {results.length}
             </Text>
             <Button
-              title="send all "
+              title="lucky "
               type="outline"
               iconRight
               icon={
@@ -183,7 +183,7 @@ const SearchResultScreen = (props) => {
                   name="globe"
                   type="font-awesome-5"
                   size={15}
-                  color="white"
+                  color="#062c2cd8"
                 />
               }
               buttonStyle={styles.checkButton}
@@ -209,7 +209,10 @@ const SearchResultScreen = (props) => {
                             uri: item.avatar,
                           }}
                           activeOpacity={0.9}
-                          containerStyle={{ marginRight: 10 }}
+                          containerStyle={{
+                            marginRight: 10,
+                            alignSelf: 'center',
+                          }}
                         />
                         <View>
                           <Text style={styles.title}>
@@ -278,14 +281,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   checkButton: {
-    backgroundColor: '#062c2cd8',
+    backgroundColor: '#fff',
     borderWidth: 2,
     borderRadius: 1,
     paddingVertical: 1,
-    borderColor: 'transparent',
+    borderColor: '#062c2cd8',
   },
   checkButtonLabel: {
-    color: '#fff',
+    color: '#062c2cd8',
     textTransform: 'capitalize',
     // fontFamily:'GoodFeelingSans'
   },

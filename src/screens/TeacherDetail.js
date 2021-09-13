@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderColor: '#888',
     borderStyle: 'solid',
     borderWidth: 1,
-    backgroundColor: '#97a1a896',
+    backgroundColor: '#fff',
   },
   decesionContainer: {
     marginTop: 10,

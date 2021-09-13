@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Spinner } from '../components/Spinner';
+import Skeleton from '../components/Skeleton';
 import { resetToken } from '../store/actions';
 const StarterScreen = (props) => {
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const StarterScreen = (props) => {
   return (
     <View style={styles.backPage}>
       {loading ? (
-        <Spinner size={100} />
+        <Skeleton />
       ) : (
         <>
           <View style={styles.upperPage}>
