@@ -12,6 +12,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Skeleton from '../components/Skeleton';
+import { Spinner } from '../components/Spinner';
 import { resetToken } from '../store/actions';
 const StarterScreen = (props) => {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,33 @@ const StarterScreen = (props) => {
   return (
     <View style={styles.backPage}>
       {loading ? (
-        <Skeleton />
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              height: '50%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Text
+              style={{ textAlign: 'center', color: 'blue', fontWeight: '700' }}
+              h3
+            >
+              Vertiual School
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Spinner size={50} />
+          </View>
+        </View>
       ) : (
         <>
           <View style={styles.upperPage}>

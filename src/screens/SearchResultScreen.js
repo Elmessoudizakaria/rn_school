@@ -6,7 +6,15 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import { ref as fireRef, set, push } from 'firebase/database';
+import {
+  endAt,
+  get,
+  push,
+  ref as fireRef,
+  set,
+  startAt,
+} from 'firebase/database';
+import { distanceBetween, geohashQueryBounds } from 'geofire-common';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
@@ -17,7 +25,6 @@ import { db } from '../api/firebaseApi';
 import { Spinner } from '../components/Spinner';
 import useLocation from '../hooks/useLocation';
 import { chooseTeacher } from '../store/actions';
-
 const SearchResultScreen = (props) => {
   const data = [
     {
@@ -145,6 +152,57 @@ const SearchResultScreen = (props) => {
   const search = () => {
     props.navigation.navigate('SearchDetail');
   };
+  const findNearestLocation = ({ lat, lng }) => {
+    const center = [lat, lng];
+    const radiusInM = 50 * 1000;
+    const bounds = geohashQueryBounds(center, radiusInM);
+    const promises = [];
+    for (const b of bounds) {
+     
+      const rs = get(fireRef(db, 'teachers/'));
+      promises.push(rs);
+      // rs.then((DataSnapshot) => {
+      //   console.log(DataSnapshot);
+      //   for (const snap of DataSnapshot) {
+      //     console.log(snap);
+      //   }
+      // }).catch((err) => console.log(err));
+    }
+    Promise.all(promises)
+      .then((snapshots) => {
+        const matchingDocs = [];
+        console.log(snapshots)
+        // for (const snap of snapshots) {
+        //   for (const doc of snap.docs) {
+        //     const lati = doc.get('lat');
+        //     const lngi = doc.get('lng');
+
+        //     // We have to filter out a few false positives due to GeoHash
+        //     // accuracy, but most will match
+        //     const distanceInKm = distanceBetween([lati, lngi], center);
+        //     const distanceInM = distanceInKm * 1000;
+        //     if (distanceInM <= radiusInM) {
+        //       matchingDocs.push(doc);
+        //     }
+        //   }
+        // }
+
+        return matchingDocs;
+      })
+      .then((matchingDocs) => {
+        console.log(matchingDocs);
+        // ...
+      })
+      .catch((err) => console.log(err));
+    // const lat = 33.1;
+    // const lng = -7.4;
+    // const hash = geohashForLocation([lat, lng]);
+    // set(fireRef(db, 'teachers/' + props.uid), {
+    //   geohash: hash,
+    //   lat: lat,
+    //   lng: lng,
+    // });
+  };
   useEffect(() => {
     if (props.uid.length > 0) {
       if (location !== null) {
@@ -158,12 +216,24 @@ const SearchResultScreen = (props) => {
         };
         set(push(fireRef(db, 'users/' + props.uid)), searchBody);
         setResults(data);
+        findNearestLocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
       }
     } else {
       // alert('login first')
       props.navigation.navigate('AuthPage');
     }
   }, [location]);
+  // useEffect(() => {
+  //   if (props.uid.length > 0 && location !== null) {
+  //     findNearestLocation({
+  //       lat: location.coords.latitude,
+  //       lng: location.coords.longitude,
+  //     });
+  //   }
+  // }, []);
   return (
     <View style={styles.container}>
       {errorMsg ? <Text h4>{errorMsg}</Text> : null}

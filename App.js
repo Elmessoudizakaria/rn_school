@@ -84,7 +84,7 @@ const TabsScreen = () => (
       name="ProfileFlow"
       component={ProfileFlowScreen}
       options={{
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Compte',
         tabBarIcon: () => (
           <Icon name="user" type="font-awesome" color="#00aced" />
         ),
