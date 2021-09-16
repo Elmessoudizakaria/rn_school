@@ -9,7 +9,7 @@
 
 import { initializeApp } from '@firebase/app';
 import { getDatabase } from '@firebase/database';
-
+import { getFirestore } from 'firebase/firestore/lite';
 const firebaseConfig = {
   apiKey: 'AIzaSyAqNfEUNFLb6XDZo0vDqBrEKNSilelMExs',
   authDomain: 'location-tracker-6a473.firebaseapp.com',
@@ -22,5 +22,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
-export { db, app };
+const fireStoreDb = getFirestore(app);
+export { db, app, fireStoreDb };

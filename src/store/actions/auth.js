@@ -14,19 +14,31 @@ import {
 } from 'firebase/auth';
 import { app } from '../../api/firebaseApi';
 import {
+  LOAD_USER,
   LOGIN,
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   REGISTER,
   RESET_TOKEN,
 } from './types';
+import axios from 'axios';
 
 export const login = ({ email, password }) => {
   return (dispatch) => {
     dispatch({ type: LOGIN });
     const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
-      .then((user) => loginUserSuccess(dispatch, user))
+      .then((user) => {
+        axios
+          .get('http://localhost:4000/load-user/' + user.user.email)
+          .then((res) => {
+            return loginUserSuccess(dispatch, {
+              ...res.data,
+              uid: user.user.uid,
+            });
+          })
+          .catch((err) => loginUserFail(dispatch));
+      })
       .catch((err) => loginUserFail(dispatch));
   };
 };
@@ -50,7 +62,17 @@ const loginUserSuccess = (dispatch, user) => {
     payload: user,
   });
 };
-
+export const reloadUser = ({ email, uid }) => {
+  return (dispatch) => {
+    dispatch({ type: LOAD_USER });
+    axios
+      .get('http://localhost:4000/load-user/' + email)
+      .then((res) => {
+        return loginUserSuccess(dispatch, { ...res.data, uid: uid });
+      })
+      .catch((err) => loginUserFail(dispatch));
+  };
+};
 export const resetToken = (token) => {
   return {
     type: RESET_TOKEN,

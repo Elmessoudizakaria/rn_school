@@ -6,22 +6,16 @@
  * Modified By: El Messoudi Zakaria (you@you.you>)
  * -----
  */
-import {
-  endAt,
-  get,
-  push,
-  ref as fireRef,
-  set,
-  startAt,
-} from 'firebase/database';
-import { distanceBetween, geohashQueryBounds } from 'geofire-common';
+import { get, push, ref as fireRef, set } from 'firebase/database';
+import { collection, getDocs, orderBy, where } from 'firebase/firestore/lite';
+import { distanceBetween } from 'geofire-common';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { connect } from 'react-redux';
-import { db } from '../api/firebaseApi';
+import { db, fireStoreDb } from '../api/firebaseApi';
 import { Spinner } from '../components/Spinner';
 import useLocation from '../hooks/useLocation';
 import { chooseTeacher } from '../store/actions';
@@ -152,56 +146,33 @@ const SearchResultScreen = (props) => {
   const search = () => {
     props.navigation.navigate('SearchDetail');
   };
-  const findNearestLocation = ({ lat, lng }) => {
+  const frStore = async ({ lat, lng }) => {
     const center = [lat, lng];
     const radiusInM = 50 * 1000;
-    const bounds = geohashQueryBounds(center, radiusInM);
-    const promises = [];
-    for (const b of bounds) {
-     
-      const rs = get(fireRef(db, 'teachers/'));
-      promises.push(rs);
-      // rs.then((DataSnapshot) => {
-      //   console.log(DataSnapshot);
-      //   for (const snap of DataSnapshot) {
-      //     console.log(snap);
-      //   }
-      // }).catch((err) => console.log(err));
+
+    const teacherRef = fireRef(db, 'teachers/');
+    const teachersReal = await get(teacherRef);
+    const teachers = teachersReal.toJSON();
+    const matchingDocs = [];
+    for (const snap of Object.keys(teachers)) {
+      const lati = teachers[snap]['lat'];
+      const lngi = teachers[snap]['lng'];
+      const distanceInKm = distanceBetween([lati, lngi], center);
+      const distanceInM = distanceInKm * 1000;
+      if (distanceInM <= radiusInM) {
+        matchingDocs.push(teachers[snap]);
+      }
     }
-    Promise.all(promises)
-      .then((snapshots) => {
-        const matchingDocs = [];
-        console.log(snapshots)
-        // for (const snap of snapshots) {
-        //   for (const doc of snap.docs) {
-        //     const lati = doc.get('lat');
-        //     const lngi = doc.get('lng');
-
-        //     // We have to filter out a few false positives due to GeoHash
-        //     // accuracy, but most will match
-        //     const distanceInKm = distanceBetween([lati, lngi], center);
-        //     const distanceInM = distanceInKm * 1000;
-        //     if (distanceInM <= radiusInM) {
-        //       matchingDocs.push(doc);
-        //     }
-        //   }
-        // }
-
-        return matchingDocs;
-      })
-      .then((matchingDocs) => {
-        console.log(matchingDocs);
-        // ...
-      })
-      .catch((err) => console.log(err));
-    // const lat = 33.1;
-    // const lng = -7.4;
-    // const hash = geohashForLocation([lat, lng]);
-    // set(fireRef(db, 'teachers/' + props.uid), {
-    //   geohash: hash,
-    //   lat: lat,
-    //   lng: lng,
-    // });
+    console.log(matchingDocs);
+    setResults(matchingDocs);
+    return matchingDocs;
+  };
+  const fir = async () => {
+    const order = orderBy('geohash', 'desc');
+    const whereCondition = where('name', '==', 'simo');
+    const teachersCollection = collection(fireStoreDb, 'teachers');
+    const dataTech = await getDocs(teachersCollection);
+    dataTech.docs.map((doc) => console.log(doc.data()));
   };
   useEffect(() => {
     if (props.uid.length > 0) {
@@ -215,25 +186,16 @@ const SearchResultScreen = (props) => {
           },
         };
         set(push(fireRef(db, 'users/' + props.uid)), searchBody);
-        setResults(data);
-        findNearestLocation({
+        frStore({
           lat: location.coords.latitude,
           lng: location.coords.longitude,
         });
+        fir();
       }
     } else {
-      // alert('login first')
       props.navigation.navigate('AuthPage');
     }
   }, [location]);
-  // useEffect(() => {
-  //   if (props.uid.length > 0 && location !== null) {
-  //     findNearestLocation({
-  //       lat: location.coords.latitude,
-  //       lng: location.coords.longitude,
-  //     });
-  //   }
-  // }, []);
   return (
     <View style={styles.container}>
       {errorMsg ? <Text h4>{errorMsg}</Text> : null}
@@ -263,7 +225,7 @@ const SearchResultScreen = (props) => {
           <View>
             <FlatList
               data={results}
-              keyExtractor={(teacher) => teacher.id}
+              keyExtractor={(teacher) => teacher.name + teacher.lastName}
               showsVerticalScrollIndicator={false}
               legacyImplementation={false}
               renderItem={({ item }) => {
@@ -302,7 +264,9 @@ const SearchResultScreen = (props) => {
                           </Text>
                         </View>
                       </View>
-                      <Text style={styles.price}>{item.price}</Text>
+                      <Text style={styles.price}>
+                        {Number(item.price).toFixed(2)} DHS
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 );
@@ -374,7 +338,7 @@ const mapStateToProps = ({ search, auth }) => {
   return {
     level: search.level,
     subject: search.subject,
-    uid: auth.uid,
+    uid: auth.user.uid,
   };
 };
 export default connect(mapStateToProps, { chooseTeacher })(SearchResultScreen);

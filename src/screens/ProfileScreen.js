@@ -8,9 +8,10 @@
  */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Text } from 'react-native-elements';
+import { Avatar, Button, Switch, Text } from 'react-native-elements';
+import { connect } from 'react-redux';
 
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
   return (
     <View style={{ paddingHorizontal: 20, paddingVertical: 30 }}>
       <View style={styles.avatarContainer}>
@@ -19,14 +20,14 @@ const ProfileScreen = () => {
           title="ZE"
           size="large"
           source={{
-            uri: 'null',
+            uri: props.user.avatar,
           }}
           activeOpacity={0.9}
         />
       </View>
       <View style={styles.avatarContainer}>
         <Text h3 style={styles.nameLabel}>
-          Zakaria EL messoudi
+          {props.user.name} {props.user.lastName}
         </Text>
       </View>
       <View style={styles.avatarContainer}>
@@ -36,9 +37,21 @@ const ProfileScreen = () => {
       </View>
       <View style={styles.avatarContainer}>
         <Text h3 style={styles.emailLabel}>
-          email@email.com
+          {props.user.email}
         </Text>
       </View>
+      {props.user.isTeacher ? (
+        <View style={styles.avatarContainer}>
+          <Text h4 style={styles.emailLabel}>
+            Status Actuel{' '}
+          </Text>
+          <Switch
+            style={{ alignSelf: 'center' }}
+            value={props.user.status}
+            onValueChange={() => console.log('change')}
+          />
+        </View>
+      ) : null}
       <View>
         <Button title="update profile" type="outline" />
       </View>
@@ -67,5 +80,9 @@ const styles = StyleSheet.create({
   viewContainer: {},
   // avatarContainer:{}
 });
-
-export default ProfileScreen;
+const mapStateToProps = ({ auth }) => {
+  return {
+    user: auth.user,
+  };
+};
+export default connect(mapStateToProps)(ProfileScreen);

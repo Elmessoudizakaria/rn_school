@@ -11,14 +11,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
-import Skeleton from '../components/Skeleton';
 import { Spinner } from '../components/Spinner';
-import { resetToken } from '../store/actions';
+import { reloadUser, resetToken } from '../store/actions';
 const StarterScreen = (props) => {
   const [loading, setLoading] = useState(true);
   const authStateChanged = (currentUser) => {
     if (currentUser) {
-      props.resetToken({ email: currentUser.email, uid: currentUser.uid });
+      props.reloadUser({ email: currentUser.email, uid: currentUser.uid });
       goHome();
     } else {
       setLoading(false);
@@ -128,4 +127,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ auth }) => {
   return { uid: auth.uid, email: auth.email };
 };
-export default connect(mapStateToProps, { resetToken })(StarterScreen);
+export default connect(mapStateToProps, { resetToken, reloadUser })(
+  StarterScreen
+);

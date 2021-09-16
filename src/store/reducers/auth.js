@@ -16,6 +16,7 @@
  */
 
 import {
+  LOAD_USER,
   LOGIN,
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
@@ -58,13 +59,15 @@ export default (state = initialState, action) => {
         error: 'Authentication Failed.',
       };
     case LOGIN_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,
         user: action.payload,
-        uid: action.payload.user.uid,
-        email: action.payload.user.email,
+      };
+    case LOAD_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
 
     default:
