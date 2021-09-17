@@ -9,6 +9,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { AirbnbRating, Avatar, Button, Text } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 const TeacherDetail = (props) => {
   const backToSearch = () => {
@@ -18,7 +19,7 @@ const TeacherDetail = (props) => {
     <View>
       {/* rating */}
       <View>
-        <AirbnbRating count={5} showRating={4} isDisabled />
+        <AirbnbRating count={5} showRating={props.teacher.rate} isDisabled />
       </View>
       {/* avatar */}
       <View style={styles.avatarContainer}>
@@ -27,14 +28,16 @@ const TeacherDetail = (props) => {
           title="ZE"
           size="large"
           source={{
-            uri: 'null',
+            uri: props.teacher.avatar,
           }}
           activeOpacity={0.9}
         />
       </View>
       {/* name */}
       <View style={styles.nameContainer}>
-        <Text h3>Zakaria EL messoudi</Text>
+        <Text h3>
+          {props.teacher.name} {props.teacher.lastName}
+        </Text>
       </View>
       {/* resumé */}
       <View style={styles.resumeContainer}>
@@ -102,4 +105,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#884646',
   },
 });
-export default TeacherDetail;
+const mapStateToProps = ({ search }) => {
+  return {
+    teacher: search.teacher,
+  };
+};
+export default connect(mapStateToProps)(TeacherDetail);

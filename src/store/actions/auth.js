@@ -21,7 +21,7 @@ import {
   REGISTER,
   RESET_TOKEN,
 } from './types';
-import axios from 'axios';
+import school from '../../api/schoolApi';
 
 export const login = ({ email, password }) => {
   return (dispatch) => {
@@ -29,8 +29,8 @@ export const login = ({ email, password }) => {
     const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        axios
-          .get('http://localhost:4000/load-user/' + user.user.email)
+        school
+          .get('/load-user/' + user.user.email)
           .then((res) => {
             return loginUserSuccess(dispatch, {
               ...res.data,
@@ -65,8 +65,8 @@ const loginUserSuccess = (dispatch, user) => {
 export const reloadUser = ({ email, uid }) => {
   return (dispatch) => {
     dispatch({ type: LOAD_USER });
-    axios
-      .get('http://localhost:4000/load-user/' + email)
+    school
+      .get('/load-user/' + email)
       .then((res) => {
         return loginUserSuccess(dispatch, { ...res.data, uid: uid });
       })

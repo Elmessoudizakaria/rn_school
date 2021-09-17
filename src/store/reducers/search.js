@@ -1,4 +1,11 @@
-import { CHOOSE_LEVEL, CHOOSE_SUBJECT, CHOOSE_TEACHER } from '../actions/types';
+import {
+  CHOOSE_LEVEL,
+  CHOOSE_SUBJECT,
+  CHOOSE_TEACHER,
+  SEARCH_TEACHERS,
+  SEARCH_TEACHERS_FAILURE,
+  SEARCH_TEACHERS_SUCCESS,
+} from '../actions/types';
 
 /*
  * File Created: Tuesday, 7th September 2021 2:07:17 pm
@@ -22,6 +29,9 @@ const initialState = {
     { name: 'English', icon: 'language', color: '#e64646d8' },
     { name: 'Geography', icon: 'globe-africa', color: '#d6e646d8' },
   ],
+  teachers: [],
+  loadTeachers: false,
+  loadTeacherError: null,
 };
 
 export default (state = initialState, action) => {
@@ -31,7 +41,18 @@ export default (state = initialState, action) => {
     case CHOOSE_SUBJECT:
       return { ...state, subject: action.payload };
     case CHOOSE_TEACHER:
+      console.log(action.payload);
       return { ...state, teacher: action.payload };
+    case SEARCH_TEACHERS:
+      return { ...state, loadTeachers: true };
+    case SEARCH_TEACHERS_SUCCESS:
+      return { ...state, teachers: action.payload, loadTeachers: false };
+    case SEARCH_TEACHERS_FAILURE:
+      return {
+        ...state,
+        loadTeacherError: 'Something went wrong please retry',
+        loadTeachers: false,
+      };
     default:
       return state;
   }

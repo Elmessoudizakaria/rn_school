@@ -14,6 +14,7 @@ import SearchScreen from './src/screens/SearchScreen';
 import StarterScreen from './src/screens/StarterScreen';
 import TeacherDetail from './src/screens/TeacherDetail';
 import reducers from './src/store/reducers';
+import { connect } from 'react-redux';
 const HomeStack = createStackNavigator();
 const HomeFlowScreen = () => (
   <HomeStack.Navigator>
@@ -93,20 +94,30 @@ const TabsScreen = () => (
   </Tabs.Navigator>
 );
 const RootStack = createStackNavigator();
-const RootScreen = () => {
+const RootScreen = (props) => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="Home" component={HomeFlowScreen} />
+      {!props.user || !props.user.uid ? (
+        <RootStack.Screen name="Home" component={HomeFlowScreen} />
+      ) : null}
+
       <RootStack.Screen name="App" component={TabsScreen} />
     </RootStack.Navigator>
   );
 };
+
+const mapStateToProps = ({ auth }) => {
+  return {
+    user: auth.user,
+  };
+};
+const RootStatckScreen = connect(mapStateToProps)(RootScreen);
 export default function App() {
   const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <RootScreen />
+        <RootStatckScreen />
       </NavigationContainer>
     </Provider>
   );
