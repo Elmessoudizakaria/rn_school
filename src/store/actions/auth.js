@@ -63,14 +63,19 @@ const loginUserSuccess = (dispatch, user) => {
   });
 };
 export const reloadUser = ({ email, uid }) => {
+  console.log(email)
   return (dispatch) => {
     dispatch({ type: LOAD_USER });
     school
       .get('/load-user/' + email)
       .then((res) => {
+        console.log('data ',res.data)
         return loginUserSuccess(dispatch, { ...res.data, uid: uid });
       })
-      .catch((err) => loginUserFail(dispatch));
+      .catch((err) => {
+        console.log('error : ',err)
+        return loginUserFail(dispatch)
+      });
   };
 };
 export const resetToken = (token) => {

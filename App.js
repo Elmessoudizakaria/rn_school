@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from 'react-native-elements';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
@@ -69,30 +69,40 @@ const ProfileFlowScreen = () => (
   </ProfileStack.Navigator>
 );
 const Tabs = createBottomTabNavigator();
-const TabsScreen = () => (
-  <Tabs.Navigator screenOptions={{ headerShown: false }}>
-    <Tabs.Screen
-      options={{ title: 'Home', tabBarShowLabel: false }}
-      name="SchoolFlow"
-      component={MainFlowScreen}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarIcon: () => <Icon name="home" color="#00aced" />,
-      }}
-    />
-    <Tabs.Screen
-      options={{ title: 'Profile' }}
-      name="ProfileFlow"
-      component={ProfileFlowScreen}
-      options={{
-        tabBarLabel: 'Compte',
-        tabBarIcon: () => (
-          <Icon name="user" type="font-awesome" color="#00aced" />
-        ),
-      }}
-    />
-  </Tabs.Navigator>
-);
+const TabsScreen = (props) => {
+  return (
+    <Tabs.Navigator screenOptions={{ headerShown: false }}>
+      <Tabs.Screen
+        options={{ title: 'Home', tabBarShowLabel: false }}
+        name="SchoolFlow"
+        component={MainFlowScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: () => <Icon name="home" color="#00aced" />,
+        }}
+      />
+      {props.user && props.user.uid ? (
+        <Tabs.Screen
+          options={{ title: 'Profile' }}
+          name="ProfileFlow"
+          component={ProfileFlowScreen}
+          options={{
+            tabBarLabel: 'Compte',
+            tabBarIcon: () => (
+              <Icon name="user" type="font-awesome" color="#00aced" />
+            ),
+          }}
+        />
+      ) : null}
+    </Tabs.Navigator>
+  );
+};
+const mapStateToProps = ({ auth }) => {
+  return {
+    user: auth.user,
+  };
+};
+const TabsStatckScreen = connect(mapStateToProps)(TabsScreen);
 const RootStack = createStackNavigator();
 const RootScreen = (props) => {
   return (
@@ -101,16 +111,11 @@ const RootScreen = (props) => {
         <RootStack.Screen name="Home" component={HomeFlowScreen} />
       ) : null}
 
-      <RootStack.Screen name="App" component={TabsScreen} />
+      <RootStack.Screen name="App" component={TabsStatckScreen} />
     </RootStack.Navigator>
   );
 };
 
-const mapStateToProps = ({ auth }) => {
-  return {
-    user: auth.user,
-  };
-};
 const RootStatckScreen = connect(mapStateToProps)(RootScreen);
 export default function App() {
   const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));

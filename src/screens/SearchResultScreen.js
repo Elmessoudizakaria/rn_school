@@ -27,7 +27,7 @@ const SearchResultScreen = (props) => {
     props.navigation.navigate('SearchDetail');
   };
   useEffect(() => {
-    if (props.uid.length > 0) {
+    if (props.user && props.user.uid.length > 0) {
       if (location !== null) {
         const searchBody = {
           level: props.level,
@@ -45,86 +45,81 @@ const SearchResultScreen = (props) => {
   return (
     <View style={styles.container}>
       {props.errorMessage ? <Text h4>{props.errorMessage}</Text> : null}
-      {location ? (
+      {errorMsg ? <Text h4>{errorMsg}</Text> : null}
+      {location && props.teachers.length > 0 ? (
         <>
-          {props.teachers.length > 0 ? (
-            <>
-              <View style={styles.resultBlock}>
-                <Text h4 style={styles.title}>
-                  {' '}
-                  Search results : {props.teachers.length}
-                </Text>
-                <Button
-                  title="lucky "
-                  type="outline"
-                  iconRight
-                  icon={
-                    <Icon
-                      name="globe"
-                      type="font-awesome-5"
-                      size={15}
-                      color="#062c2cd8"
-                    />
-                  }
-                  buttonStyle={styles.checkButton}
-                  titleStyle={styles.checkButtonLabel}
+          <View style={styles.resultBlock}>
+            <Text h4 style={styles.title}>
+              {' '}
+              Search results : {props.teachers.length}
+            </Text>
+            <Button
+              title="lucky "
+              type="outline"
+              iconRight
+              icon={
+                <Icon
+                  name="globe"
+                  type="font-awesome-5"
+                  size={15}
+                  color="#062c2cd8"
                 />
-              </View>
-              <View>
-                <FlatList
-                  data={props.teachers}
-                  keyExtractor={(teacher) => teacher.name + teacher.lastName}
-                  showsVerticalScrollIndicator={false}
-                  legacyImplementation={false}
-                  renderItem={({ item }) => {
-                    return (
-                      <TouchableOpacity onPress={() => search(item)}>
-                        <View style={styles.row}>
-                          <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <Avatar
-                              rounded
-                              title={makeAvatarTitle(item)}
-                              size="small"
-                              source={{
-                                uri: item.avatar,
-                              }}
-                              activeOpacity={0.9}
-                              containerStyle={{
-                                marginRight: 10,
-                                alignSelf: 'center',
-                              }}
-                            />
-                            <View>
-                              <Text style={styles.title}>
-                                {item.name} {item.lastName}
-                              </Text>
-                              <Text>
-                                <Icon
-                                  name="star"
-                                  type="font-awsome"
-                                  size={12}
-                                  color={'yellow'}
-                                />{' '}
-                                {item.rate}{' '}
-                                <Text style={styles.totalVotes}>
-                                  ({item.totalVotes})
-                                </Text>
-                              </Text>
-                            </View>
-                          </View>
-                          <Text style={styles.price}>
-                            {Number(item.price).toFixed(2)} DHS
+              }
+              buttonStyle={styles.checkButton}
+              titleStyle={styles.checkButtonLabel}
+            />
+          </View>
+          <View>
+            <FlatList
+              data={props.teachers}
+              keyExtractor={(teacher) => teacher.name + teacher.lastName}
+              showsVerticalScrollIndicator={false}
+              legacyImplementation={false}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity onPress={() => search(item)}>
+                    <View style={styles.row}>
+                      <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Avatar
+                          rounded
+                          title={makeAvatarTitle(item)}
+                          size="small"
+                          source={{
+                            uri: item.avatar,
+                          }}
+                          activeOpacity={0.9}
+                          containerStyle={{
+                            marginRight: 10,
+                            alignSelf: 'center',
+                          }}
+                        />
+                        <View>
+                          <Text style={styles.title}>
+                            {item.name} {item.lastName}
+                          </Text>
+                          <Text>
+                            <Icon
+                              name="star"
+                              type="font-awsome"
+                              size={12}
+                              color={'yellow'}
+                            />{' '}
+                            {item.rate}{' '}
+                            <Text style={styles.totalVotes}>
+                              ({item.totalVotes})
+                            </Text>
                           </Text>
                         </View>
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View>
-            </>
-          ) : (
-            <Text>Pas de resultas</Text>
-          )}
+                      </View>
+                      <Text style={styles.price}>
+                        {Number(item.price).toFixed(2)} DHS
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
         </>
       ) : (
         <Spinner size={120} />
@@ -193,7 +188,7 @@ const mapStateToProps = ({ search, auth }) => {
     teachers: search.teachers,
     loading: search.loadTeachers,
     errorMessage: search.loadTeacherError,
-    uid: auth.user.uid,
+    user: auth.user,
   };
 };
 export default connect(mapStateToProps, { chooseTeacher, searchTeachers })(

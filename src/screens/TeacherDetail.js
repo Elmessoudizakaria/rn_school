@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AirbnbRating, Avatar, Button, Text } from 'react-native-elements';
+import { Avatar, Button, Text } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 const TeacherDetail = (props) => {
@@ -16,31 +16,46 @@ const TeacherDetail = (props) => {
     props.navigation.navigate('SchoolSearchResult');
   };
   return (
-    <View>
-      {/* rating */}
+    <View style={styles.pageContainer}>
+      <View style={styles.avatarViewContainer}>
+        {/* avatar */}
+        <View style={styles.avatar}>
+          <Avatar
+            rounded
+            title="ZE"
+            size="large"
+            source={{
+              uri: props.teacher.avatar,
+            }}
+            activeOpacity={0.9}
+          />
+        </View>
+        {/* Name and title */}
+        <View>
+          <Text h3>
+            {' '}
+            {props.teacher.name} {props.teacher.lastName}
+          </Text>
+          <Text>
+            {props.teacher.title
+              ? props.teahcer.title
+              : 'Developer and lead instructor '}
+          </Text>
+        </View>
+      </View>
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        {/* Nombre des avis */}
+        <View style={{ marginRight: 5 }}>
+          <Text>Nombre d'avis : {props.teacher.totalVotes}</Text>
+        </View>
+        {/* Rate */}
+        <View>
+          <Text>Rate: {props.teacher.rate}</Text>
+        </View>
+      </View>
+      {/* Personal information */}
       <View>
-        <AirbnbRating count={5} showRating={props.teacher.rate} isDisabled />
-      </View>
-      {/* avatar */}
-      <View style={styles.avatarContainer}>
-        <Avatar
-          rounded
-          title="ZE"
-          size="large"
-          source={{
-            uri: props.teacher.avatar,
-          }}
-          activeOpacity={0.9}
-        />
-      </View>
-      {/* name */}
-      <View style={styles.nameContainer}>
-        <Text h3>
-          {props.teacher.name} {props.teacher.lastName}
-        </Text>
-      </View>
-      {/* resumé */}
-      <View style={styles.resumeContainer}>
+        <Text h3>Information personnelles</Text>
         <Text>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum
           consectetur fugiat reprehenderit repellendus molestiae alias id
@@ -69,26 +84,16 @@ const TeacherDetail = (props) => {
 };
 
 const styles = StyleSheet.create({
-  avatarContainer: {
-    marginVertical: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  nameContainer: {
-    marginVertical: 10,
-    paddingHorizontal: 10,
-  },
-  resumeContainer: {
-    marginVertical: 10,
-    paddingLeft: 10,
-    paddingRight: 20,
-    textAlign: 'justify',
-    borderColor: '#888',
-    borderStyle: 'solid',
-    borderWidth: 1,
+  pageContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 25,
     backgroundColor: '#fff',
   },
+  avatarViewContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  avatar: { marginRight: 5 },
   decesionContainer: {
     marginTop: 10,
     display: 'flex',

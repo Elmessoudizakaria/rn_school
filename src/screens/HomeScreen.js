@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     height: '60%',
   },
   lowerPage: {
+    height:'40%',
     backgroundColor: '#fff',
     paddingVertical: 20,
     borderTopLeftRadius: 50,
@@ -115,11 +116,11 @@ const styles = StyleSheet.create({
     marginVertical: 14,
   },
   levelView: {
-    flex: 1,
+    display:'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 10,
-    marginBottom: '7%',
+    marginBottom: '15%',
     marginTop: '5%',
   },
   levelContainer: {
@@ -130,11 +131,10 @@ const styles = StyleSheet.create({
   levelTitle: {
     fontSize: 15,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: '7%',
     fontWeight: '700',
   },
   checkButton: {
-    marginTop: 25,
     width: '60%',
     marginLeft: '20%',
     borderColor: '#062c2cd8',
